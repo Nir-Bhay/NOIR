@@ -6,7 +6,7 @@ import { sendPortfolioMessage } from '../services/geminiService';
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: 'Greetings. I am the digital twin of NOIR. How may I assist your inquiry today?', timestamp: Date.now() }
+    { role: 'model', text: 'Welcome to India Succession. How may I assist you with your estate planning needs today?', timestamp: Date.now() }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -43,14 +43,14 @@ const ChatWidget: React.FC = () => {
     <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end font-sans">
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-80 sm:w-96 bg-off-black border border-white/20 shadow-2xl rounded-lg overflow-hidden flex flex-col h-[500px] transition-all duration-300 animate-fade-in-up">
+        <div className="mb-4 w-80 sm:w-96 bg-off-black border border-white/20 shadow-2xl rounded-sm overflow-hidden flex flex-col h-[500px] transition-all duration-300 animate-fade-in-up">
           
           {/* Header */}
           <div className="bg-neutral-900 p-4 flex justify-between items-center border-b border-white/10">
             <div>
-              <h3 className="text-sm font-bold tracking-widest uppercase text-white">NOIR // AI</h3>
-              <p className="text-[10px] text-green-500 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> ONLINE
+              <h3 className="text-xs font-bold tracking-widest uppercase text-white">India Succession AI</h3>
+              <p className="text-[10px] text-gray-400 flex items-center gap-1 mt-1">
+                <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> ONLINE
               </p>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white">
@@ -59,13 +59,13 @@ const ChatWidget: React.FC = () => {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-black/50 backdrop-blur-sm">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-black/90">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] p-3 text-sm leading-relaxed ${
+                <div className={`max-w-[85%] p-3 text-sm leading-relaxed ${
                   msg.role === 'user' 
-                    ? 'bg-white text-black rounded-tl-lg rounded-tr-lg rounded-bl-lg' 
-                    : 'bg-neutral-800 text-gray-200 rounded-tl-lg rounded-tr-lg rounded-br-lg'
+                    ? 'bg-white text-black' 
+                    : 'bg-neutral-800 text-gray-200 border border-white/10'
                 }`}>
                   {msg.text}
                 </div>
@@ -73,7 +73,7 @@ const ChatWidget: React.FC = () => {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-neutral-800 p-3 rounded-lg">
+                <div className="bg-neutral-800 p-3 border border-white/10">
                   <Loader2 className="w-4 h-4 animate-spin text-white" />
                 </div>
               </div>
@@ -88,7 +88,7 @@ const ChatWidget: React.FC = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Ask about our work..."
+              placeholder="Ask about our services..."
               className="flex-1 bg-black border border-white/20 text-white px-3 py-2 text-sm focus:outline-none focus:border-white transition-colors"
             />
             <button 
@@ -105,9 +105,9 @@ const ChatWidget: React.FC = () => {
       {/* Toggle Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-110 transition-transform duration-300 group"
+        className="w-14 h-14 bg-white text-black flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-105 transition-transform duration-300 group"
       >
-        {isOpen ? <X size={24} /> : <MessageSquare size={24} className="group-hover:animate-pulse" />}
+        {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
       </button>
     </div>
   );

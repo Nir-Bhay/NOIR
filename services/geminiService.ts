@@ -4,50 +4,45 @@ import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 /**
- * Sends a message to the Gemini model acting as the portfolio owner's digital twin.
+ * Sends a message to the Gemini model acting as the India Succession assistant.
  */
 export const sendPortfolioMessage = async (
   message: string,
   history: { role: 'user' | 'model'; text: string }[]
 ): Promise<string> => {
   try {
-    // Transform simple history into a prompt context if needed, 
-    // or use chat history if we were maintaining a persistent chat session object.
-    // For simplicity in this stateless service call, we regenerate the context.
-    
     const systemInstruction = `
-      You are the digital assistant for "NOIR", a high-end creative agency and portfolio.
-      Your tone is professional, minimalist, artistic, and slightly mysterious.
-      You answer questions about design, photography, branding, and our services.
-      Keep answers concise (under 50 words) and elegant.
-      Do not use emojis. Use sophisticated vocabulary.
+      You are the digital assistant for "India Succession", a boutique advisory firm specializing in estate and succession planning for Indians and NRIs.
+      Your tone is professional, empathetic, knowledgeable, and legally astute (but you must include disclaimers that you are an AI and not a replacement for legal counsel).
+      
+      Key Services: Will Writing, Private Trusts, Family Business Succession, Cross Border Succession, Mediation, Probate.
+      Key Team: Namita Agarwal (Founder), Pallavi Uzgare (CRO), Manita Agarwal (Strategic Adviser).
+      
+      Answer questions about these services clearly. Keep answers concise (under 75 words) and professional.
+      Do not use emojis. Use formal language suitable for high-net-worth individuals.
     `;
 
-    // Convert history to text format for the prompt context since we are doing single-turn generation for simplicity here,
-    // or we could use chat.sendMessage if we stored the Chat object. 
-    // Let's use generateContent with a strong system instruction context.
-    
     const prompt = `
       ${systemInstruction}
       
       Previous conversation:
-      ${history.map(h => `${h.role === 'user' ? 'Visitor' : 'NOIR'}: ${h.text}`).join('\n')}
+      ${history.map(h => `${h.role === 'user' ? 'Client' : 'Advisor'}: ${h.text}`).join('\n')}
       
-      Visitor: ${message}
-      NOIR:
+      Client: ${message}
+      Advisor:
     `;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
-        temperature: 0.7,
+        temperature: 0.5, // Lower temperature for more consistent, professional responses
       }
     });
 
-    return response.text || "I am currently observing silence. Please try again later.";
+    return response.text || "I am currently reviewing your request. Please try again momentarily.";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "Connection interrupted. Simulating offline aesthetic.";
+    return "We are currently experiencing high inquiry volume. Please try again later or contact us at contact@indiasuccession.com";
   }
 };
